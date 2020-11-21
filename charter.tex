@@ -1,28 +1,28 @@
 \documentclass[11pt]{charter}
 
 % El títulos de la memoria, se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \ttitle
-\titulo{Título del proyecto} 
+\titulo{Implementación de Interfaz SDI en FPGA Cyclone V} 
 
 % Nombre del posgrado, se usa en la carátula y se puede usar el cualquier lugar del documento con el comando \degreename
-%\posgrado{Carrera de Especialización en Sistemas Embebidos} 
-\posgrado{Carrera de Especialización en Internet de las Cosas} 
+\posgrado{Carrera de Especialización en Sistemas Embebidos} 
+%\posgrado{Carrera de Especialización en Internet de las Cosas} 
 %\posgrado{Carrera de Especialización en Intelegencia Artificial}
-%\posgrado{Maestría en Sistemas Embebidos} 
+%\posgrado{Maestría en Si%stemas Embebidos} 
 %\posgrado{Maestría en Internet de las cosas}
 
 % Tu nombre, se puede usar el cualquier lugar del documento con el comando \authorname
-\autor{Nombre del Autor} 
+\autor{Joaquin Gaspar Ulloa} 
 
 % El nombre del director y co-director, se puede usar el cualquier lugar del documento con el comando \supname y \cosupname y \pertesupname y \pertecosupname
-\director{Nombre del Director}
-\pertenenciaDirector{pertenencia} 
+\director{Diego Marcelo Martin}
+\pertenenciaDirector{MPS} 
 % FIXME:NO IMPLEMENTADO EL CODIRECTOR ni su pertenencia
 \codirector{} % si queda vacio no se deberíá incluir 
 \pertenenciaCoDirector{}
 
 % Nombre del cliente, quien va a aprobar los resultados del proyecto, se puede usar con el comando \clientename y \empclientename
-\cliente{Nombre del cliente}
-\empresaCliente{Empresa del cliente}
+\cliente{Marcelo Indarramendi}
+\empresaCliente{VideoSwitch}
 
 % Nombre y pertenencia de los jurados, se pueden usar el cualquier lugar del documento con el comando \jurunoname, \jurdosname y \jurtresname y \perteunoname, \pertedosname y \pertetresname.
 \juradoUno{Nombre y Apellido (1)}
@@ -32,10 +32,9 @@
 \juradoTres{Nombre y Apellido (3)}
 \pertenenciaJurTres{pertenencia (3)}
  
-\fechaINICIO{25 de agosto de 2020}		%Fecha de inicio de la cursada de GdP \fechaInicioName
-\fechaFINALPlanificacion{13 de octubre de 2020} 	%Fecha de final de cursada de GdP
+\fechaINICIO{23 de Octubre de 2020}		%Fecha de inicio de la cursada de GdP \fechaInicioName
+\fechaFINALPlanificacion{11 de diciembre de 2020} 	%Fecha de final de cursada de GdP
 \fechaFINALTrabajo{22 de agosto de 2021}		%Fecha de defensa pública del trabajo final
-
 
 \begin{document}
 
@@ -62,18 +61,17 @@
 \hline
 \rowcolor[HTML]{C0C0C0} 
 Revisión & \multicolumn{1}{c|}{\cellcolor[HTML]{C0C0C0}Detalles de los cambios realizados} & Fecha      \\ \hline
-1.0      & Creación del documento                                          & 27/06/2020 \\ \hline
-1.1      & Avances en alguna cosa                                          & dd/mm/aaaa \\ \hline
-1.2      & Otro ejemplo \newline
-		   Con texto partido \newline
-		   En varias líneas \newline
-		   A propósito                                                     & dd/mm/aaaa \\ \hline
+1.0      & Creación del documento                                          & 23/10/2020 \\ \hline
+1.1      & Avances hasta entregables principales del proyecto & 06/11/2020 \\ \hline
+1.2      & Se agregan historias de usuarios y se hacen correcciones & 15/11/2020 \\ \hline
+%1.2      & Otro ejemplo \newline
+%		   Con texto partido \newline
+%		   En varias líneas \newline
+%		   A propósito                                                     & dd/mm/aaaa \\ \hline
 \end{tabularx}
 \end{table}
 
 \pagebreak
-
-
 
 \section{Acta de constitución del proyecto}
 \label{sec:acta}
@@ -84,7 +82,7 @@ Buenos Aires, \fechaInicioName
 
 \vspace{2cm}
 
-Por medio de la presente se acuerda con el Ing. \authorname\hspace{1px} que su Trabajo Final de la \degreename\hspace{1px} se titulará ``\ttitle'', consistirá esencialmente en el prototipo preliminar de un sistema de control de temperatura de un calefón, y tendrá un presupuesto preliminar estimado de 600 hs de trabajo y \textcolor{red}{\$XXX}, con fecha de inicio \fechaInicioName\hspace{1px} y fecha de presentación pública \fechaFinalName.
+Por medio de la presente se acuerda con el Ing. \authorname\hspace{1px} que su Trabajo Final de la \degreename\hspace{1px} se titulará ``\ttitle'', consistirá esencialmente en un módulo de procesamiento serie digital, como remplazo del IP-SDI-II Core de Intel, capaz de transmitir, recibir y procesar tanto los datos entregados por el cable drivers, como por el core de la FPGA y tendrá un presupuesto preliminar estimado de 704 hs de trabajo y \textcolor{red}{\$XXX}, con fecha de inicio \fechaInicioName\hspace{1px} y fecha de presentación pública \fechaFinalName.
 
 Se adjunta a esta acta la planificación inicial.
 
@@ -102,59 +100,41 @@ Se adjunta a esta acta la planificación inicial.
 \end{table}
 
 
-
-
 \section{Descripción técnica-conceptual del proyecto a realizar}
 \label{sec:descripcion}
 
-\begin{consigna}{red}
-El objetivo es que el lector en una o dos páginas entienda de qué se trata el proyecto y cuáles son sus desafíos, su motivación y su importancia.
-Se debe destacar claramente cuál es el valor que agrega el proyecto a realizar. ``El presente proyecto se destaca especialmente por incorporar tal cosa... Esto lo diferencia de otros sistemas similares en que ...''
 
-Puede ser útil incluir en esta sección la respuesta a alguna de estas preguntas:
+En este proyecto se busca desarrollar un módulo SDI (del inglés Serial Digital Interface) para reemplazar el módulo que se utiliza actualmente, que es un IP (del inglés Intellectual Property) Core de Intel, lo que implica que es pago y está sujeto a una versión del IDE de desarrollo. Se busca implementar una interfaz bidireccional conformada por dos partes principales, la física y la de protocolo.
 
-\begin{itemize}
-\item ¿Cómo se vincula este proyecto con la misión de la organización?
-\item ¿Cómo se inserta este proyecto en el modelo de negocio de la organización?
-\item ¿Ayuda a la explicación si se incluye un lienzo Canvas del Modelo de Negocio?
-\item ¿En qué estado del ciclo de vida está el producto que se desea reemplazar o mejorar?
-\item ¿Cuales son las necesidades que debe satisfacer?
-\item ¿Por dónde pasa la innovación?
-\end{itemize}
+Uno de los principales objetivos de este desarrollo es que mediante un módulo de FPGA auto contenido la empresa pueda dar un paso hacia la independencia tecnológica en los productos que desarrolla. Este aspecto es de vital importancia, ya que los productos de la empresa se encuentran en constante desarrollo y muchas veces la dependencia de alguna plataforma de desarrollo o propiedad intelectual generan demoras en los desarrollos y hasta limitaciones a la hora de implementar nuevas tecnologías. Se considera que esta idea va en la misma linea de pensamiento, que la misión de la empresa:
 
-La descripción técnica-conceptual \textbf{debe incluir al menos un diagrama en bloques del sistema }y una frase como la siguiente: ``En la Figura \ref{fig:diagBloques} se presenta el diagrama en bloques del sistema. Se observa que...''. Luego recién más abajo de haber puesto esta frase se pone la figura. La regla es que las figuras nunca pueden ir antes de ser mencionadas en el texto, porque sino el lector no entiende por qué de pronto aparece una figura.
+"Diseñar y desarrollar equipamiento, desde la excelencia, tanto en Hardware como en Software, de tal forma que permitan cubrir las necesidades de nuestros clientes y agregar valor a sus servicios de Televisión estableciendo una comunicación que nos permita una mejora continua a través de producciones de alta tecnología apuntando a establecer una red de comercialización global en un futuro cercano."
+
+Los principales aspectos técnicos de este trabajo se pueden agrupar en dos. Por un lado, los conocimientos sobre el estándar de comunicación y sus aplicaciones, donde tendrá un rol central la experiencia con la que cuenta la empresa. Por otro lado, la experiencia en desarrollos en FPGA, particularmente en aplicaciones para TV digital, donde será clave la opinión del director.
+
+En lo referido al estándar es importante contextualizar su área de aplicación. En el ambiente de la televisión es muy común tener que transmitir señales digitales no comprimidas y por medios compatibles con los medios analógicos. Con tal fin, muchos equipos de televisión digital cuentan con interfaces SDI, para transmitir señales de alta calidad.
+El estándar SDI, creado por la SMPTE en 1989, es una interfaz digital serie asincrónica, cuya principal aplicación es la transmisión de señales de video digital profesional no comprimido y no encriptado, por cables coaxiales de 75 ohm. Este estándar tiene como principal característica que admite muy alto bitrate y no agrega grandes retardos.
 
 \vspace{25px}
 
 \begin{figure}[htpb]
 \centering 
-\includegraphics[width=.7\textwidth]{./Figuras/diagBloques.png}
-\caption{Diagrama en bloques del sistema}
+\includegraphics[width=.7\textwidth]{./Figuras/SDI.jpg}
+\caption{Diagrama en bloques de la interfaz SDI}
 \label{fig:diagBloques}
 \end{figure}
 
 \vspace{25px}
 
-El tamaño de la tipografía en la figura debe ser adecuado para que NO pase lo que ocurre acá, donde el lector debe esforzarse para poder leer el texto. Los colores usados en el diagrama deben ser adecuados, tal que ayuden a comprender mejor el diagrama.
-\end{consigna}
+En cuanto a la implementación en FPGA, la interfaz SDI consta de dos capas independientes, que se pueden visualizar en la Figura \ref{fig:diagBloques}, la de recepción/transmisión y la de protocolo, por tal motivo el módulo deberá implementar ambas instancias de manera separada. Para la primera se suelen usar hard-transceivers, contenidos en la FPGA o soft-transceivers instanciados con lógica, para las aplicaciones con menor demanda de bitrate. Este módulo se encarga de muestrear la entrada asincrónica, sincronizarse a la misma y deserializar los datos. Para la segunda etapa, se debe implementar un submódulo que trabaje en el dominio de los datos paralelizados y tenga la información propia del protocolo para interpretar, acondicionar y validar la señal. Esta parte del desarrollo se encarga principalmente de la sincronización de paquetes y de la detección de errores.
+Aunque la interfaz funciona en un solo sentido, debe ser configurable para funcionar como transmisor y receptor de manera separada, como se ilustra en la Figura \ref{fig:diagBloques}. Por lo tanto, el módulo a desarrollar debe ser capaz de tomar la señal serie que llega a la FPGA desde el driver del cable, deserializarla y procesarla en un sentido y paquetizar la señal acorde al protocolo y serializarla en el otro sentido.
 
+Debido a la creciente demanda de procesamiento y consiguientemente el mayor uso de recursos en la FPGA, debe diseñarse el módulo de forma tal que solo se instancie lo mínimo indispensable, para el funcionamiento en el formato que se configure, ya sea por el sentido de los datos o el bitrate de los mismo.
+
+El desarrollo debe estar pensado para su implementación sobre el hardware de los equipos de la empresa, que ya cuenta con un driver apropiado para tal fin y un microcontrolador capaz de controlar el módulo. Por tal motivo, la implementación debe hacerse con una FPGA Cyclone V de Intel, que son las que usan los equipos más modernos de la empresa, pero en lo posible debe ser independiente del modelo de dispositivo a usar, para asegurar portabilidad.
 
 \section{Identificación y análisis de los interesados}
 \label{sec:interesados}
-
-\begin{consigna}{red} 
-Nota: (borrar esto y todas las consignas en color rojo antes de entregar este documento).
- 
-Es inusual que una misma persona esté en más de un rol, incluso en proyectos chicos.
- 
-Si se considera que una persona cumple dos o más roles, entonces sólo dejarla en el rol más importante. Por ejemplo:
-
-\begin{itemize}
-\item Si una persona es Cliente pero también colabora u orienta, dejarla solo como Cliente.
-\item Si una persona es el Responsable, no debe ser colocado también como Miembro del equipo.
-\end{itemize}
-
-Pero en cambio sí es usual que el Cliente y el Auspiciante sean el mismo, por ejemplo.
 
 \begin{table}[ht]
 %\caption{Identificación de los interesados}
@@ -163,170 +143,172 @@ Pero en cambio sí es usual que el Cliente y el Auspiciante sean el mismo, por e
 \hline
 \rowcolor[HTML]{C0C0C0} 
 Rol           & Nombre y Apellido & Organización 	& Puesto 	\\ \hline
-Auspiciante   &                   &              	&        	\\ \hline
-Cliente       & \clientename      &\empclientename	&        	\\ \hline
-Impulsor      &                   &              	&        	\\ \hline
+Auspiciante   & Roberto Maury     &\empclientename 	& CEO    	\\ \hline
+Cliente       & \clientename      &\empclientename	& Development Engineering Manager \\ \hline
+%Impulsor      &                   &              	&        	\\ \hline
 Responsable   & \authorname       & FIUBA        	& Alumno 	\\ \hline
-Colaboradores &                   &              	&        	\\ \hline
+%Colaboradores &                   &              	&        	\\ \hline
 Orientador    & \supname	      & \pertesupname 	& Director	Trabajo final \\ \hline
-Equipo        & miembro1 \newline 
-				miembro2          &              	&        	\\ \hline
-Opositores    &                   &              	&        	\\ \hline
-Usuario final &                   &              	&        	\\ \hline
+%Equipo        & miembro1 \newline 
+%				miembro2          &              	&        	\\ \hline
+%Opositores    &                   &              	&        	\\ \hline
+%Usuario final &                   &              	&        	\\ \hline
 \end{tabularx}
 \end{table}
 
-El Director suele ser uno de los Orientadores.
-
-No dejar celdas vacías; si no hay nada que poner en una celda colocar un signo ``-''.
-
-No dejar filas vacías; si no hay nada que poner en una fila entonces eliminarla.
-
-Sería deseable listar a continuación de la tabla las principales características de cada interesado.
- 
-Por ejemplo:
 \begin{itemize}
-\item Auspiciante: es riguroso y exigente con la rendición de gastos. Tener mucho cuidado con esto.
-\item Equipo: Juan Perez, suele pedir licencia porque tiene un familiar con una enfermedad. Planificar considerando esto.
-\item Orientador: María Gómez, nos va a poder ayudar mucho con la gestión de impuestos.
+\item Auspiciante: Roberto, promueve los desarrollos y las capacitaciones, es exigente con el cumplimiento de los horarios y las normas.
+\item Cliente: Marcelo, tiene gran conocimiento en el desarrollo de proyectos, conoce los equipos de la empresa y las normas de TV digital.
+\item Orientador: Diego, tiene amplio conocimiento sobre desarrollos en FPGA y buen manejo de normas de TV digital.
 \end{itemize}
-
-\end{consigna}
-
-
 
 \section{1. Propósito del proyecto}
 \label{sec:proposito}
 
-\begin{consigna}{red}
-¿Por qué se hace el proyecto? ¿Qué se quiere lograr? 
-
-Se recomienda que sea solo un párrafo que empiece diciendo ``El propósito de este proyecto es...''.
-\end{consigna}
+El propósito de este proyecto es realizar una interfaz SDI para FPGA con la capacidad de transmitir y recibir señales de video digital de alto bitrate, para en un futuro utilizarlo tanto en los equipos que actualmente comercializa la empresa, así como también en futuros desarrollos.
 
 \section{2. Alcance del proyecto}
 \label{sec:alcance}
 
-\begin{consigna}{red}
-¿Qué se incluye y que no se incluye en este proyecto?
+En este proyecto se diseñará e implementará la descripción de los circuitos digitales en lenguaje VHDL para implementar en una FPGA Cyclone V, cuya funcionalidades serán tanto recibir y decodificar como serializar y transmitir datos entre una interfaz SDI y el core de procesamiento de la FPGA. Del lado de la FPGA la información será entragada en palabras, cuyo largo y bitrate será acordado con el cliente.
 
-Se refiere al trabajo a hacer para entregar el producto o resultado especificado. 
+Se incluirán los archivos complementarios necesarios para el correcto funcionamiento del módulo, ya sean SDC o scripts de TCL del proyectos. Además, se incluirá la documentación del diseño y para la operación del módulo por una persona capacitada.
 
-Explicitar todo lo quede comprendido dentro del alcance del proyecto.
+El control de la configuración del módulo será por medio en una interfaz SPI-Avalon ya implementada en VHDL.
 
-Explicitar además todo lo que no quede incluido (``El presente proyecto no incluye...'')
-
-\end{consigna}
-
+En el presente proyecto no se incluirán ningún tipo de diseño ni implementación de hardware o firmware complementaria al diseño. El diseño no cumplirá con estándares SDI con tasas de bitrate superiores a los 3 Gbit/s.
 
 \section{3. Supuestos del proyecto}
 \label{sec:supuestos}
 
-\begin{consigna}{red}
-``Para el desarrollo del presente proyecto se supone que: ...''
+Para el desarrollo del presente proyecto se supone que:
 
 \begin{itemize}
-\item Supuesto 1
-\item Supuesto 2...
+\item Se cuenta con el hardware necesario para su implementación, con driver SDI y una FPGA Cyclone V con hard-transceivers.
+\item Se cuenta con los instrumentos de medición necesarios.
+\item Se cuenta con las licencias de software necesarias para el desarrollo.
+\item Se cuenta con el módulo que se desea remplazar.
+\item Se cuenta con el tiempo necesario dentro de la empresa para hacer el desarrollo y las pruebas.
+\item Se cuenta con las normas en cuestión.
 \end{itemize}
-
-Por ejemplo, se podrían incluir supuestos respecto a disponibilidad de tiempo y recursos humanos y materiales, sobre la factibilidad técnica de distintos aspectos del proyecto, sobre otras cuestiones que sean necesarias para el éxito del proyecto como condiciones macroeconómicas o reglamentarias.
-\end{consigna}
 
 \section{4. Requerimientos}
 \label{sec:requerimientos}
 
-\begin{consigna}{red}
-Los requerimientos deben numerarse y de ser posible agruparlos por afinidad:
-
 \begin{enumerate}
-\item Grupo de requerimientos asociados con...
+\item Validación
 	\begin{enumerate}
-	\item Requerimiento 1
-	\item Requerimiento 2
-	\item Requerimiento 3 (prioridad menor)
+	\item Medición y observación de audio y video luego de pasar por el sistema completo.
+	\item Medición de los los paquetes con un analizador según la norma.
+	\item Cumplir con el bitrate de los estándares dentro del rango de SD-SDI y 3G-SDI.
 	\end{enumerate}
-\item Grupo de requerimientos asociados con...
+\item Funcionalidad
 	\begin{enumerate}
-	\item Requerimiento 1
-	\item Requerimiento 2 (prioridad menor)
+	\item Obtener las tasas de bitrate contempladas dentro del rango de los estandares SD-SDI y 3G-SDI.
+	\item Obtener un diseño sin problemas de timing en las señales entre dominios de clock dentro del módulo.
+	\item Obtener un módulo sin problemas de timing por setup o hold en las señales de entrada y salida.
+	\item La implementación del sistema no debe ocupar más del 3000 Logic Array Blocks en la FPGA.
+	\end{enumerate}
+\item Metodología de trabajo
+	\begin{enumerate}
+	\item Control de versiones mediante SVN.
+	\item Desarrollo en Quartus con licencias para análisis de timing y simulaciones.
+	\item Planificación y documentación mediante Redmine.
+	\item Diseño modular.
+	\end{enumerate}
+\item Documentación
+	\begin{enumerate}
+	\item Confección de la memoria técnica.
+	\item Confección de documentación del diseño del módulo.
+	\item Confección de documentación de uso del módulo.
 	\end{enumerate}
 \end{enumerate}
-
-Leyendo los requerimientos se debe poder interpretar cómo será el proyecto y su funcionalidad.
-
-De ser posible indicar cómo se obtuvieron cada uno de los requerimientos 
-
-Indicar claramente cuál es la prioridad entre los distintos requerimientos. 
-
-No olvidarse de que los requerimientos incluyen a las regulaciones y normas vigentes!!!
-
-Y al escribirlos seguir las siguientes reglas:
-\begin{itemize}
-\item Ser breve y conciso (nadie lee cosas largas). 
-\item Ser específico: no dejar lugar a confusiones.
-\item Expresar los requerimientos en términos que sean cuantificables y medibles.
-\end{itemize}
-
-\end{consigna}
 
 \section{Historias de usuarios (\textit{Product backlog})}
 \label{sec:backlog}
 
-\begin{consigna}{red}
-Descripción: En esta sección se deben incluir las historias de usuarios y su ponderación (\textit{history points}). Recordar que las historias de usuarios son descripciones cortas y simples de una característica contada desde la perspectiva de la persona que desea la nueva capacidad, generalmente un usuario o cliente del sistema. La ponderación es un número entero que representa el tamaño de la historia comparada con otras historias de similar tipo.
-\end{consigna}
+
+\begin{itemize}
+\item Como desarrollador de hardware, necesito que la interfaz SDI se comunique con el driver mediante un puerto LVDS, para no tener que modificar la placa. Story point: 1
+\item Como desarrollador de firmware, necesito poder configurar el módulo escribiendo registro de 32 bits, para que se maneje de la misma manera que los demás módulos de FPGA. Story point: 1
+\item Como desarrollador de firmware, necesito que el microcontrolador se comunique con el módulo mediante una interfaz SPI común a toda a FPGA, para no tener que modificar el driver. Story point: 2
+\item Como encargado del producto Encoder, necesito que la interfaz soporte tasas de datos compatibles al menos con videos de calidad HD, para recibir video no comprimido. Story point: 13
+\item Como supervisor de desarrollo, necesito que la interfaz soporte videos de calidad 3G o por lo menos permita la posibilidad de hacer el desarrollo a futuro, para futuros desarrollos. Story point: 40
+\item Como supervisor de desarrollo, necesito que el módulo use los clock y señales actualmente disponibles, para que sea retrocompatible. Story point: 3
+\item Como supervisor de desarrollo, necesito que el módulo funcione en Cyclone V y en las configuraciones que sea posible lo haga sin hard-transceivers, para poder abaratar costos cuando sea posible. Story point: 13
+\item Como encargado del producto Encoder, necesito que el módulo sea compatible con paquetes de transport stream de 188 Bytes y 204 Bytes, para poder ser usado en distintas etapas de la cadena transmisión de TV digital. Story point: 8
+\end{itemize}
+
+El story point de cada historia de usuario fue definido según un formato similar a la serie de Fibonacci, tomando los valores: 0, 0.5, 1, 2, 3, 5, 8, 13, 20, 40, 100. Contemplando la complejidad de la tarea con un peso de 0.3, el volumen de la misma con un peso de 0.25, la incertidumbre con un peso de 0.35 y potenciales riesgos con un peso de 0.1, sobre un total unitario. El conocimiento del equipo está implícito en las otras cuatro categorías dado que de momento soy el único integrante.
 
 \section{5. Entregables principales del proyecto}
 \label{sec:entregables}
 
-\begin{consigna}{red}
-Cosas como: 
 \begin{itemize}
-\item Manual de uso
-\item Diagrama esquemático
-\item Código fuente
-\item Diagrama de instalación
-\item Informe final
-
+\item Diseño en VHDL y archivos complementarios.
+\item Manual de implementación.
+\item Diagrama esquemático y memoria de decisiones de diseño.
+\item Informes de avances mediante tareas de Redmine.
+\item Informe final.
 \end{itemize}
-
-\end{consigna}
 
 \section{6. Desglose del trabajo en tareas}
 \label{sec:wbs}
 
-\begin{consigna}{red}
-Se recomienda mostrar el WBS mediante una lista indexada:
-
 \begin{enumerate}
-\item Grupo de tareas 1
+\item Investigación preliminar (56 hs)
 	\begin{enumerate}
-	\item Tarea 1 (tantas hs)
-	\item Tarea 2 (tantas hs)
-	\item Tarea 3 (tantas hs)
+	\item Búsqueda de documentación, material y desarrollos. (8 hs)
+	\item Estudio de normas. (8 hs)
+	\item Estudio de hojas de datos de componentes con esta funcionalidad. (4 hs)
+	\item Estudio de desarrollos similares. (12 hs)
+	\item Estudio de documentación de productos similares. (20 hs)
+	\item Discutir resultados obtenidos con el director y el cliente. (4 hs)
 	\end{enumerate}
-\item Grupo de tareas 2
+\item Planificación (12 hs)
 	\begin{enumerate}
-	\item Tarea 1 (tantas hs)
-	\item Tarea 2 (tantas hs)
-	\item Tarea 3 (tantas hs)
+	\item Planificación de tareas. (8 hs)
+	\item Documentación de la planificación. (4 hs)
 	\end{enumerate}
-	\item Grupo de tareas 3
+\item Diseño (116 hs)
 	\begin{enumerate}
-	\item Tarea 1 (tantas hs)
-	\item Tarea 2 (tantas hs)
-	\item Tarea 3 (tantas hs)
-	\item Tarea 4 (tantas hs)
-	\item Tarea 5 (tantas hs)
+	\item Definición parámetros de diseño. (20 hs)
+	\item Definición de interfaces del sistema. (12 hs)
+	\item Diseño del diagrama en bloques. (16 hs)
+	\item Investigar que módulos ya se encuentran desarrollados. (4 hs)
+	\item Diseño detallado de los bloques. (40 hs)
+	\item Definición de pruebas. (16 hs)
+	\item Discutir resultados obtenidos con el director y el cliente. (8 hs)
+	\end{enumerate}
+\item Desarrollo (256 hs)
+	\begin{enumerate}
+	\item Descripción de cada módulo de la parte física de transmisión. (20 hs)
+	\item Descripción de cada módulo de la parte física de recepción. (40 hs)
+	\item Descripción de cada módulo de la parte del protocolo de transmisión. (40 hs)
+	\item Descripción de cada módulo de la parte del protocolo de recepción. (40 hs)
+	\item Integración de módulos. (40 hs)
+	\item Implementación del control. (16 hs)
+	\item Reuniones con el director y el cliente. (20 hs)
+	\item Simulaciones. (40 hs)
+	\end{enumerate}
+\item Pruebas (124 hs)
+	\begin{enumerate}
+	\item Por módulo. (24 hs)
+	\item Por bloques funcionales. (40 hs)
+	\item Del sistema completo. (40 hs)
+	\item Integración en equipo. (20 hs)
+	\end{enumerate}
+\item Documentación (140 hs)
+	\begin{enumerate}
+	\item Avances. (24 hs)
+	\item Mediciones. (16 hs)
+	\item Diseño e implementación. (40 hs)
+	\item Informe Final. (40 hs)
+	\item Presentación. (20 hs)
 	\end{enumerate}
 \end{enumerate}
 
-Cantidad total de horas: (tantas hs)
-
-Se recomienda que no haya ninguna tarea que lleve más de 40 hs. 
-
-\end{consigna}
+Cantidad total de horas: (704 hs)
 
 \section{7. Diagrama de Activity On Node}
 \label{sec:AoN}
